@@ -5,13 +5,13 @@
                                    
                                     <div class="clearfix"></div>
                                 </div>
-<?php // 	include ('add_modal_example_2.php'); ?>
+<?php  ?>
 
                                 <div class="x_content">
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
-                                                <th>Amount (Rs.)</th>
+                                                <th>Amount</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
