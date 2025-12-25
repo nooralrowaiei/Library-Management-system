@@ -1,6 +1,5 @@
 <?php
-ob_start();
-include('include/dbcon.php'); 
+include('include/dbcon.php');
 
 if (isset($_POST['submit'])) {
     $roll_number = $_POST['roll_number'];
@@ -12,7 +11,7 @@ if (isset($_POST['submit'])) {
     $count = $result->num_rows;
 
     if ($count <= 0) {
-        $error_message = 'No match found for the School ID Number';
+        $error_message = 'No match found for the Roll Number';
     } else {
         header('Location: borrow_book.php?roll_number=' . urlencode($roll_number));
         exit();
@@ -36,6 +35,7 @@ include('header.php');
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
+
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-4"></div>
@@ -69,12 +69,10 @@ include('header.php');
                         <div class="col-md-4"></div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
 </div>
 
-<?php
-include('footer.php'); 
-ob_end_flush();
-?>
+<?php include('footer.php'); ?>
