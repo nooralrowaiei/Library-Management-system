@@ -126,14 +126,12 @@ $row=mysqli_fetch_array($query);
                                     </label>
 									<div class="col-md-3">
                                         <select name="category" class="select2_single form-control" tabindex="-1" required="required">
-                                            <option value="CSE">CSE</option>
-                                            <option value="ME">ME</option>
-                                            <option value="EC">EC</option>
-                                            <option value="EN">EN</option>
-                                            <option value="Civil">Civil</option>
-                                            <option value="BBA">BBA</option>
-                                            <option value="MBA">MBA</option>
-                                            <option value="B-Pharma">B-Pharma</option>
+                                            <option value="School of Business">School of Business</option>
+                                            <option value="School of Logistics & Maritime Studies">School of Logistics & Maritime Studies</option>
+                                            <option value="School of Engineering">School of Engineering</option>
+                                            <option value="School of Creative Media">School of Creative Media</option>
+                                            <option value="School of ICT">School of ICT</option>
+                                            <option value="School of Foundation">School of Foundation</option>
                                        </select>
                                       
                                     </div>
