@@ -25,7 +25,6 @@ $ID=$_GET['user_id'];
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
-                        <!-- content starts here -->
 <?php
   $query=mysqli_query($con,"select * from user where user_id='$ID'")or die(mysqli_error($con));
 $row=mysqli_fetch_array($query);
@@ -109,13 +108,6 @@ $row=mysqli_fetch_array($query);
                                         </select>
                                     </div>
                                 </div>					
-                                <div class="form-group">
-                                    <label class="control-label col-md-4" for="last-name">Address<span class="required" style="color:red;">*</span>
-                                    </label>
-                                    <div class="col-md-4">
-                                        <input type="text" value="<?php echo $row['address']; ?>" name="address" id="last-name2" class="form-control col-md-7 col-xs-12" required="">
-                                    </div>
-                                </div>
                                 
                                 <div class="ln_solid"></div>
                                 <div class="form-group">
@@ -137,7 +129,6 @@ $middlename = $_POST['middlename'];
 $lastname = $_POST['lastname'];
 $contact = $_POST['contact'];
 $gender = $_POST['gender'];
-$address = $_POST['address'];
 $type = $_POST['type'];
 $branch = $_POST['branch'];
 
@@ -148,14 +139,13 @@ $branch = $_POST['branch'];
 else
 {		
 mysqli_query($con," UPDATE user SET roll_number='$roll_number', firstname='$firstname', middlename='$middlename', lastname='$lastname', contact='$contact', 
-gender='$gender', address='$address', type='$type', branch='$branch' WHERE user_id = '$id' ")or die(mysqli_error($con));
+gender='$gender', type='$type', branch='$branch' WHERE user_id = '$id' ")or die(mysqli_error($con));
 echo "<script>alert('Successfully Updated User Info!'); window.location='member.php'</script>";
 }
 
 }
 ?>
 						
-                        <!-- content ends here -->
                     </div>
                 </div>
             </div>

@@ -64,11 +64,11 @@ $row=mysqli_fetch_array($query);
                                 </div>
                                  
                                 <div class="form-group">
-                                    <label class="control-label col-md-4" for="first-name">Email-Id
+                                    <label class="control-label col-md-4" for="first-name">Email-Id<span class="required" style="color:red;">*</span>
                                     </label>
                                     <div class="col-md-3">
                                         <input type="text" name="email_id" value="<?php echo $row['email_id']; ?>" class="form-control col-md-7 col-xs-12" pattern="[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$">
-                                    </div><span style="color:red;">Optional</span>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-md-4" for="first-name">Contact<span class="required" style="color:red;">*</span>

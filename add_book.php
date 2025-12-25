@@ -1,30 +1,23 @@
 <?php
-// Include necessary files first
 include ('include/dbcon.php');
 include ('header.php');
 
-// --- FORM PROCESSING LOGIC ---
-// Check if the form was submitted using the POST method and the 'submit' button was clicked
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 
-    // Check if an image was uploaded
     if (isset($_FILES['image']['tmp_name']) && is_uploaded_file($_FILES['image']['tmp_name'])) {
         
         $file = $_FILES['image']['tmp_name'];
         $image = $_FILES["image"]["name"];
         $size = $_FILES["image"]["size"];
         
-        // Check for file size
-        if ($size > 10000000) { // 10MB
+        if ($size > 10000000) {
             die("Error: File size is too big!");
         }
 
-        // Move the uploaded file
         $upload_path = "upload/" . basename($image);
         if (move_uploaded_file($file, $upload_path)) {
             $book_image = $image;
 
-            // Get all data from the form POST
             $book_title = $_POST['book_title'];
             $category = $_POST['category'];
             $author = $_POST['author'];
@@ -37,14 +30,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
             $isbn = $_POST['isbn'];
             $copyright_year = $_POST['copyright_year'];
             $status = $_POST['status'];
-            $n = (int)$_POST['book_copies']; // Cast to integer for safety
+            $n = (int)$_POST['book_copies'];
 
-            // Loop to insert the specified number of copies
             for ($i = 1; $i <= $n; $i++) {
-                // --- Generate New Barcode ---
                 $query = mysqli_query($con, "SELECT mid_barcode FROM `barcode` ORDER BY mid_barcode DESC LIMIT 1") or die(mysqli_error($con));
                 
-                $mid_barcode = 0; // Default if table is empty
+                $mid_barcode = 0;
                 if ($fetch = mysqli_fetch_array($query)) {
                     $mid_barcode = $fetch['mid_barcode'];
                 }
@@ -56,7 +47,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 
                 $remark = ($status == 'Lost') ? 'Not Available' : 'Available';
 
-                // --- Use Prepared Statements for Security ---
                 $stmt_book = mysqli_prepare($con, "INSERT INTO book (book_title, category, author, author_2, author_3, author_4, author_5, book_pub, publisher_name, isbn, copyright_year, status, book_barcode, book_image, date_added, remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?)");
                 mysqli_stmt_bind_param($stmt_book, "sssssssssssssss", $book_title, $category, $author, $author_2, $author_3, $author_4, $author_5, $book_pub, $publisher_name, $isbn, $copyright_year, $status, $gen, $book_image, $remark);
                 mysqli_stmt_execute($stmt_book) or die(mysqli_error($con));
@@ -66,9 +56,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                 mysqli_stmt_execute($stmt_barcode) or die(mysqli_error($con));
             }
 
-            // Redirect after successful processing
             header('location: view_all_barcode.php?loop=' . $n);
-            exit(); // Always exit after a header redirect
+            exit();
 
         } else {
             echo "<div class='alert alert-danger'>Error: Could not move uploaded file. Check permissions.</div>";
@@ -79,7 +68,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 }
 ?>
 
-<!-- === HTML FORM SECTION === -->
 <div class="page-title">
     <div class="title_left">
         <h3>
@@ -97,10 +85,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
-                <!-- content starts here -->
 
                 <form method="post" enctype="multipart/form-data" class="form-horizontal form-label-left">
-                    <!-- The unnecessary hidden input has been REMOVED -->
                     
                     <div class="form-group">
                         <label class="control-label col-md-4" for="book_title">Title <span class="required" style="color:red;">*</span></label>
@@ -181,14 +167,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                         <label class="control-label col-md-4" for="category">Category <span class="required" style="color:red;">*</span></label>
                         <div class="col-md-3">
                             <select name="category" id="category" class="select2_single form-control" tabindex="-1" required="required">
-                                <option value="CSE">CSE</option>
-                                <option value="ME">ME</option>
-                                <option value="EC">EC</option>
-                                <option value="EN">EN</option>
-                                <option value="Civil">Civil</option>
-                                <option value="BBA">BBA</option>
-                                <option value="MBA">MBA</option>
-                                <option value="B-Pharma">B-Pharma</option>
+                                <option value="School of Business">School of Business</option>
+                                <option value="School of Logistics & Maritime Studies">School of Logistics & Maritime Studies</option>
+                                <option value="School of Engineering">School of Engineering</option>
+                                <option value="School of Creative Media">School of Creative Media</option>
+                                <option value="School of ICT">School of ICT</option>
+                                <option value="School of Foundation">School of Foundation</option>
                             </select>
                         </div>
                     </div>
@@ -206,7 +190,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                         </div>
                     </div>
                 </form>
-                <!-- content ends here -->
+
             </div>
         </div>
     </div>

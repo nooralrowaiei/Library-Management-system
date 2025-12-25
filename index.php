@@ -1,24 +1,17 @@
 <?php
-// --- PHP LOGIN LOGIC ---
-// This block should be at the very top of the file, before any HTML.
-
 include('include/dbcon.php');
 
-// Start the session only if it's not already active
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-// Variable to hold any login error messages
 $error_message = '';
 
-// Check if the form has been submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
     
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    // Use PREPARED STATEMENTS for security to prevent SQL Injection
     $stmt = mysqli_prepare($con, "SELECT admin_id, firstname, middlename, lastname, admin_type, password FROM admin WHERE username = ?");
     mysqli_stmt_bind_param($stmt, "s", $username);
     mysqli_stmt_execute($stmt);
@@ -26,23 +19,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
     mysqli_stmt_close($stmt);
 
-    // Verify the user exists and the password is correct
-    // Note: This project uses plaintext passwords. In a real-world scenario, you should use password_hash() and password_verify().
     if ($row && $password === $row['password']) {
-        // Login successful
         $_SESSION['id'] = $row['admin_id'];
 
-        // Log the user's login activity
         $log_stmt = mysqli_prepare($con, "INSERT INTO user_log (firstname, middlename, lastname, admin_type, date_log) VALUES (?, ?, ?, ?, NOW())");
         mysqli_stmt_bind_param($log_stmt, "ssss", $row['firstname'], $row['middlename'], $row['lastname'], $row['admin_type']);
         mysqli_stmt_execute($log_stmt);
         mysqli_stmt_close($log_stmt);
 
-        // Redirect to the home page
         header("location: home.php");
         exit();
     } else {
-        // Login failed
         $error_message = "Invalid username or password. Please try again.";
     }
 }
@@ -53,12 +40,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Library Management System - Login</title>
-
-    <!-- Bootstrap and Font Awesome -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="fonts/css/font-awesome.min.css" rel="stylesheet">
-    
-    <!-- Google Fonts for a more elegant look -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
@@ -205,7 +188,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
             font-family: 'Georgia', serif;
             z-index: 2;
         }
-
     </style>
 </head>
 <body>
@@ -217,8 +199,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
             </div>
             
             <form method="post" action="index.php">
-                
-                <!-- Display Error Message -->
                 <?php if (!empty($error_message)): ?>
                     <div class="alert alert-danger" role="alert">
                         <?php echo htmlspecialchars($error_message); ?>
@@ -250,7 +230,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
         <p>© <?php echo date('Y'); ?> Library Management System</p>
     </div>
 
-    <!-- JavaScript files -->
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
 </body>

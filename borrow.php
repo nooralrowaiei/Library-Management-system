@@ -1,5 +1,4 @@
 <?php 
-ob_start();
 include ('header.php'); 
 ?>
 
@@ -74,5 +73,4 @@ include ('header.php');
         </div>
 
 <?php include ('footer.php'); 
-ob_end_flush();
 ?>
